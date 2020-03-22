@@ -10,16 +10,16 @@
 #   [[ VARIABLES ]]
 #
 
-#$PLS_FILE                = "~/.please" # for production
-$PLS_FILE                = "dev/.please" # for development
-#$PLS_ALIAS               = "alias please test # comment" # for production
-$PLS_ALIAS               = "alias please test # comment" # for development
-#$PLS_BASHRC              = "~/.bashrc" # for production
-$PLS_BASHRC              = "dev/.bashrc" # for development
-$PLS_PREFIX              = "[please!]"
-$PLS_MSG_INIT_ALREADY    = "$PLS_PREFIX I found '$PLS_FILE' - apparently 'please' is already initialized!"
-$PLS_MSG_INIT_OK         = "$PLS_PREFIX Successfully initialized!"
-$PLS_MSG_INIT_FAIL       = "$PLS_PREFIX Error: Could not initialize :("
+#PLS_FILE                = "~/.please" # for production
+PLS_FILE                = "dev/.please" # for development
+#PLS_ALIAS               = "alias please test # comment" # for production
+PLS_ALIAS               = "alias please test # comment" # for development
+#PLS_BASHRC              = "~/.bashrc" # for production
+PLS_BASHRC              = "dev/.bashrc" # for development
+PLS_PREFIX              = "[please!]"
+PLS_MSG_INIT_ALREADY    = "$PLS_PREFIX I found '$PLS_FILE' - apparently 'please' is already initialized!"
+PLS_MSG_INIT_OK         = "$PLS_PREFIX Successfully initialized!"
+PLS_MSG_INIT_FAIL       = "$PLS_PREFIX Error: Could not initialize :("
 
 #
 #   [[ FUNCTIONS ]]
