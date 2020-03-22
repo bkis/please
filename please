@@ -2,9 +2,17 @@
 
 #################
 #               #
-#    PLEASE!    #
+#  Oh, PLEASE!  #
 #               #
 #################
+
+#
+#    TEXT FORMATTING CODES
+#
+
+TF_X="\033[0m"
+TF_GREEN="\033[32m"
+TF_BOLD="\033[1m"
 
 #
 #    VARIABLES
@@ -13,13 +21,12 @@
 PLS_DEV=1 # turn development mode ON (1) or OFF (0)
 PLS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" # thanks to https://stackoverflow.com/a/246128
 PLS_FILE="${HOME}/.please"
-PLS_FILE_COMMENT="# please, look at your collected terminal one-liners!"
 PLS_ALIAS="alias please="${PLS_DIR}/please" # please don't remove this comment, please"
 PLS_BASHRC="${HOME}/.bashrc"
-PLS_DELIMITER="? That's so easy! Just use this: "
-PLS_MSG_PREFIX="「please」"
-PLS_MSG_INSTALL_ALREADY="${PLS_MSG_PREFIX} is apparently already installed!"
-PLS_MSG_INSTALL_OK="${PLS_MSG_PREFIX} has been installed! just start a fresh terminal to use ${PLS_MSG_PREFIX}"
+PLS_DELIMITER=": "
+PLS_MSG_PREFIX="${TF_GREEN}${TF_BOLD}⸢please⸥${TF_X}"
+PLS_MSG_INSTALL_ALREADY="${PLS_MSG_PREFIX} is apparently ${TF_BOLD}already installed!${TF_X}"
+PLS_MSG_INSTALL_OK="${PLS_MSG_PREFIX} ${TF_BOLD}has been installed!${TF_X} Just start ${TF_BOLD}a fresh terminal${TF_X} to use ${PLS_MSG_PREFIX}"
 
 #
 #    SET UP DEV MODE
@@ -40,26 +47,26 @@ function pls_help() {
     # TODO
     # install
     # uninstall
-    # remember how to 
-    echo "${PLS_MSG_PREFIX} help... (WIP)"
+    # note how to 
+    echo -e "${PLS_MSG_PREFIX} help... (WIP)"
     exit 1
 }
 
 # FUNCTION: install
 function pls_install() {
     if grep -q "${PLS_ALIAS}" "${PLS_BASHRC}" && [ -f "${PLS_FILE}" ]; then
-        echo "${PLS_MSG_INSTALL_ALREADY}"
+        echo -e "${PLS_MSG_INSTALL_ALREADY}"
         exit 1
     else
-        echo "${PLS_MSG_PREFIX} be patient, it won't take long ..."
-        # create .please file with comment in $HOME
-        [ -f "${PLS_FILE}" ] || echo -e "${PLS_FILE_COMMENT}\n" > "${PLS_FILE}"
+        echo -e "${PLS_MSG_PREFIX} be patient, ${TF_BOLD}it won't take long${TF_X} ..."
+        # create .please file in $HOME
+        [ -f "${PLS_FILE}" ] || touch "${PLS_FILE}"
         # backup .bashrc
-        echo "${PLS_MSG_PREFIX} of course there will be a backup of ${PLS_BASHRC}!"
+        echo -e "${PLS_MSG_PREFIX} of course there will be a ${TF_BOLD}backup${TF_X} of ${PLS_BASHRC}!"
         [ -f "${PLS_BASHRC}" ] && cp "${PLS_BASHRC}" "${PLS_BASHRC}_backup"
         # append alias to .bashrc
         echo -e "\n\n${PLS_ALIAS}" >> "${PLS_BASHRC}"
-        echo "${PLS_MSG_INSTALL_OK}"
+        echo -e "${PLS_MSG_INSTALL_OK}"
         exit 0
     fi
 }
@@ -67,34 +74,55 @@ function pls_install() {
 # FUNCTION: uninstall
 function pls_uninstall() {
     # ask for confirmation
-    read -p "${PLS_MSG_PREFIX} do you really want to uninstall ${PLS_MSG_PREFIX}? (y/n)" -n 1 -r
+    echo -e -n "${PLS_MSG_PREFIX}"
+    read -p " do you ${TF_BOLD}really${TF_X} want me to uninstall myself? (y/n)" -n 1 -r
     echo
     if [[ ${REPLY} =~ ^[Yy]$ ]]; then
         # uninstall...
         # backup .bashrc
-        echo "${PLS_MSG_PREFIX} of course there will be a backup of ${PLS_BASHRC}!"
+        echo -e "${PLS_MSG_PREFIX} of course ${TF_BOLD}I will back up${TF_X} ${PLS_BASHRC}!"
         [ -f "${PLS_BASHRC}" ] && cp "${PLS_BASHRC}" "${PLS_BASHRC}_backup"
         # remove alias line from .bashrc
         grep -v -F "${PLS_ALIAS}" "${PLS_BASHRC}" > "/tmp/pleasetmp"  
         mv "/tmp/pleasetmp" "${PLS_BASHRC}"
         # inform that .please file will be kept
-        echo "${PLS_MSG_PREFIX} be aware that ${PLS_FILE} will not be deleted. just in case :)"
+        echo -e "${PLS_MSG_PREFIX} be aware that ${PLS_FILE} will ${TF_BOLD}not${TF_X} be deleted. Just in case :)"
         exit 0
     fi
-    echo "${PLS_MSG_PREFIX} don't change your mind again!"
+    echo -e "${PLS_MSG_PREFIX} don't change your mind again!"
     exit 0
 }
 
-# FUNCTION: how to remember
-function pls_remember() {
+# FUNCTION: note how to
+function pls_note() {
     # if no description entered, show help
     [[ ${@#} = 0 ]] && pls_help
-    # read param
-    PLS_NEW_DESC="${@//"$PLS_DELIMITER"/""}" # ${FOO//from/to}
-    # ask for one-liner to remember
-    read -p "${PLS_MSG_PREFIX} just once, tell me how to ${PLS_NEW_DESC}: " PLS_NEW_CMD
+    # read param and remove delimiter if present (very unlikely)
+    PLS_NEW_DESC="${@//"$PLS_DELIMITER"/' '}"
+    # remove newlines from description
+    PLS_NEW_DESC=${PLS_NEW_DESC//$'\n'/' '}
+    # ask for one-liner to note
+    echo -e -n "${PLS_MSG_PREFIX}"
+    read -p " just once, tell me how to ${PLS_NEW_DESC}: " PLS_NEW_CMD
     # append to .please file
-    echo -e "${PLS_NEW_DESC}${PLS_DELIMITER}${PLS_NEW_CMD}" >> "${PLS_FILE}"
+    echo -e "${PLS_NEW_DESC}${PLS_DELIMITER}${PLS_NEW_CMD//$'\n'/' '}" >> "${PLS_FILE}"
+    exit 0
+}
+
+# FUNCTION: look for
+function pls_look() {
+    # if nothing entered, show help
+    [[ ${@#} = 0 ]] && pls_help
+    # read param
+    PLS_LOOK_FOR="$@"
+    # look for keyword(s)
+    MATCHES=$(grep -F "$PLS_LOOK_FOR" "$PLS_FILE")
+    if [[ ${MATCHES#} = 0 ]]; then
+        echo -e "${PLS_MSG_PREFIX} don't be angry, but I ${TF_BOLD}didn't find anything${TF_X} :("
+    else
+        echo -e "${PLS_MSG_PREFIX} look at these beautiful memories! ${TF_BOLD}We noted how to ...${TF_X}"
+        echo -e $MATCHES | while read line; do echo -e "${TF_BOLD}     ... ${line//$PLS_DELIMITER/$PLS_DELIMITER$TF_X$TF_GREEN}${TF_X}"; done
+    fi
     exit 0
 }
 
@@ -111,8 +139,11 @@ function pls_remember() {
 # TEST: uninstall?
 [ "$1" = "uninstall" ] && pls_uninstall
 
-# TEST: remember?
-[ "$1" = "remember" ] && [ "$2" = "how" ] && [ "$3" = "to" ] && pls_remember "${@:4}"
+# TEST: note?
+[ "$1" = "note" ] && [ "$2" = "how" ] && [ "$3" = "to" ] && pls_note "${@:4}"
+
+# TEST: look for?
+[ "$1" = "look" ] && [ "$2" = "for" ] && pls_look "${@:3}"
 
 # TEST: just checkin'?
 [ "$1" = "please" ] && echo "${PLS_MSG_PREFIX} no begging, please!" && exit 0
