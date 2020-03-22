@@ -1,10 +1,15 @@
 #!/bin/bash
 
+#################
+#               #
+#    PLEASE!    #
+#               #
+#################
+
 #
-#    PLEASE!
+#   [[ VARIABLES ]]
 #
 
-#### VARS
 #$PLS_FILE                = "~/.please" # for production
 $PLS_FILE                = ".please" # for development
 #$PLS_ALIAS               = "alias please test # comment" # for production
@@ -16,27 +21,37 @@ $PLS_MSG_INIT_ALREADY    = "$PLS_PREFIX I found '$PLS_FILE' - apparently 'please
 $PLS_MSG_INIT_OK         = "$PLS_PREFIX Successfully initialized!"
 $PLS_MSG_INIT_FAIL       = "$PLS_PREFIX Error: Could not initialize :("
 
-# function: help
+#
+#   [[ FUNCTIONS ]]
+#
+
+# FUNCTION: help
 pls_help() {
     # TODO
     echo "$PLS_PREFIX please help... (WIP)"
     exit 1
 }
 
-# function: initialize
+# FUNCTION: initialize
 pls_init() {
     if [ -f "$PLS_FILE" ]; then
-        echo "$PLS_MSG_ALREADY_INITIALIZED"
+        echo "$PLS_MSG_INIT_ALREADY"
+        exit 1
     else
         $PLS_INIT_OK = $(touch $PLS_FILE)
         $PLS_INIT_OK = $(echo "$PLS_ALIAS" >> ~/.bashrc) && $PLS_INIT_OK
-        $PLS_INIT_OK && echo "$PLS_PREFIX" && exit 0
+        $PLS_INIT_OK && echo "$PLS_MSG_INIT_OK" && exit 0
     fi
+    echo "$PLS_MSG_INIT_FAIL"
     exit 1
 }
 
-# no args?
+#
+#   [[ PARSE ARGS ]]
+#
+
+# TEST: no args?
 [ $# -eq 0 ] && pls_help
 
-# initialize?
+# TEST: initialize?
 [ $1 -eq "initialize" ] && pls_init
