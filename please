@@ -11,13 +11,14 @@
 #
 
 PLS_DEV=1
+PLS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" # thanks to https://stackoverflow.com/a/246128
 PLS_FILE="$HOME/.please"
-PLS_FILE_COMMENT="# please, look at your collected terminal one-liners ..."
-PLS_ALIAS="alias pls='pwd' # comment"
+PLS_FILE_COMMENT="# please, look at your collected terminal one-liners!"
+PLS_ALIAS="alias please="$PLS_DIR/please" # alias to run please, please"
 PLS_BASHRC="$HOME/.bashrc"
 PLS_MSG_PREFIX="「please」"
-PLS_MSG_INIT_ALREADY="$PLS_MSG_PREFIX I found '$PLS_FILE' - apparently 'please' is already initialized!"
-PLS_MSG_INIT_OK="$PLS_MSG_PREFIX successfully initialized! Please start a fresh terminal or run 'exec bash' to start using 'please'."
+PLS_MSG_INSTALL_ALREADY="$PLS_MSG_PREFIX apparently 'please' is already installed"
+PLS_MSG_INSTALL_OK="$PLS_MSG_PREFIX successfully installed! Please start a fresh terminal or run 'exec bash' to start using 'please'."
 
 #
 #    VARIABLES IN DEV MODE
@@ -27,8 +28,7 @@ if [ "$PLS_DEV" -eq 1 ]; then
     echo "$PLS_MSG_PREFIX running in DEV mode"
     # modify some values for development
     PLS_FILE="dev/.please"
-    PLS_ALIAS="alias pls='pwd' # comment"
-    PLS_BASHRC="dev/.bashrc"
+    PLS_BASHRC="$PLS_DIR/dev/.bashrc"
 fi
 
 #
@@ -42,19 +42,32 @@ pls_help() {
     exit 1
 }
 
-# FUNCTION: initialize
-pls_init() {
-    if [ -f "$PLS_FILE" ]; then
-        echo "$PLS_MSG_INIT_ALREADY"
+# FUNCTION: install
+pls_install() {
+    if grep -q "$PLS_ALIAS" "$PLS_BASHRC" && [ -f "$PLS_FILE" ]; then
+        echo "$PLS_MSG_INSTALL_ALREADY"
         exit 1
     else
         # create .please file with comment in $HOME
-        echo "$PLS_FILE_COMMENT" >> "$PLS_FILE"
+        [ -f "$PLS_FILE" ] || echo "$PLS_FILE_COMMENT" > "$PLS_FILE"
+        # backup .bashrc
+        [ -f "$PLS_BASHRC" ] && cp "$PLS_BASHRC" "${PLS_BASHRC}_backup"
         # append alias to .bashrc
-        echo "$PLS_ALIAS" >> "$PLS_BASHRC"
-        echo "$PLS_MSG_INIT_OK"
+        echo -e "\n$PLS_ALIAS" >> "$PLS_BASHRC"
+        echo "$PLS_MSG_INSTALL_OK"
         exit 0
     fi
+}
+
+# FUNCTION: uninstall
+pls_uninstall() {  
+    # backup .bashrc
+    [ -f "$PLS_BASHRC" ] && cp "$PLS_BASHRC" "${PLS_BASHRC}_backup"
+    # remove alias line from .bashrc
+    grep -v -F "$PLS_ALIAS" "$PLS_BASHRC" > "/tmp/pleasebashrc"  
+    mv "/tmp/pleasebashrc" "$PLS_BASHRC"
+    # inform that .please file will be kept
+    # TODO
 }
 
 #
@@ -64,5 +77,11 @@ pls_init() {
 # TEST: no args?
 [ $# -eq 0 ] && pls_help
 
-# TEST: initialize?
-[ "$1" = "initialize" ] && pls_init
+# TEST: install?
+[ "$1" = "install" ] && pls_install
+
+# TEST: uninstall?
+[ "$1" = "uninstall" ] && pls_uninstall
+
+# TEST: just checkin'?
+[ "$1" = "please" ] && echo "$PLS_MSG_PREFIX no begging, please!" && exit 0
