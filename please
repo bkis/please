@@ -10,16 +10,16 @@
 #   [[ VARIABLES ]]
 #
 
-#PLS_FILE                = "~/.please" # for production
-PLS_FILE                = "dev/.please" # for development
-#PLS_ALIAS               = "alias please test # comment" # for production
-PLS_ALIAS               = "alias please test # comment" # for development
-#PLS_BASHRC              = "~/.bashrc" # for production
-PLS_BASHRC              = "dev/.bashrc" # for development
-PLS_PREFIX              = "[please!]"
-PLS_MSG_INIT_ALREADY    = "$PLS_PREFIX I found '$PLS_FILE' - apparently 'please' is already initialized!"
-PLS_MSG_INIT_OK         = "$PLS_PREFIX Successfully initialized!"
-PLS_MSG_INIT_FAIL       = "$PLS_PREFIX Error: Could not initialize :("
+#PLS_FILE="$HOME/.please" # for production
+PLS_FILE="dev/.please" # for development
+PLS_FILE_COMMENT="# PLEASE! These are your saved terminal one-liners ..."
+#PLS_ALIAS="alias please test # comment" # for production
+PLS_ALIAS="alias pls='pwd' # comment" # for development
+#PLS_BASHRC="$HOME/.bashrc" # for production
+PLS_BASHRC="dev/.bashrc" # for development
+PLS_PREFIX="[please!]"
+PLS_MSG_INIT_ALREADY="$PLS_PREFIX I found '$PLS_FILE' - apparently 'please' is already initialized!"
+PLS_MSG_INIT_OK="$PLS_PREFIX Successfully initialized!"
 
 #
 #   [[ FUNCTIONS ]]
@@ -38,12 +38,16 @@ pls_init() {
         echo "$PLS_MSG_INIT_ALREADY"
         exit 1
     else
-        $PLS_INIT_OK = $(touch $PLS_FILE)
-        $PLS_INIT_OK = $(echo "$PLS_ALIAS" >> ~/.bashrc) && $PLS_INIT_OK
-        $PLS_INIT_OK && echo "$PLS_MSG_INIT_OK" && exit 0
+        # create .please file with comment in $HOME
+        echo "$PLS_FILE_COMMENT" >> "$PLS_FILE"
+        # append alias to .bashrc
+        echo "$PLS_ALIAS" >> "$PLS_BASHRC"
+        # unnecessarily wait for it (to be removed)
+        sleep .3
+        # source .bashrc
+        source "./$PLS_BASHRC"
+        exit 0
     fi
-    echo "$PLS_MSG_INIT_FAIL"
-    exit 1
 }
 
 #
@@ -54,4 +58,4 @@ pls_init() {
 [ $# -eq 0 ] && pls_help
 
 # TEST: initialize?
-[ $1 -eq "initialize" ] && pls_init
+[ "$1" = "initialize" ] && pls_init
