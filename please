@@ -7,28 +7,38 @@
 #################
 
 #
-#   [[ VARIABLES ]]
+#    VARIABLES
 #
 
-#PLS_FILE="$HOME/.please" # for production
-PLS_FILE="dev/.please" # for development
-PLS_FILE_COMMENT="# PLEASE! These are your saved terminal one-liners ..."
-#PLS_ALIAS="alias please test # comment" # for production
-PLS_ALIAS="alias pls='pwd' # comment" # for development
-#PLS_BASHRC="$HOME/.bashrc" # for production
-PLS_BASHRC="dev/.bashrc" # for development
-PLS_MSG_PREFIX="[please]"
+PLS_DEV=1
+PLS_FILE="$HOME/.please"
+PLS_FILE_COMMENT="# please, look at your collected terminal one-liners ..."
+PLS_ALIAS="alias pls='pwd' # comment"
+PLS_BASHRC="$HOME/.bashrc"
+PLS_MSG_PREFIX="「please」"
 PLS_MSG_INIT_ALREADY="$PLS_MSG_PREFIX I found '$PLS_FILE' - apparently 'please' is already initialized!"
 PLS_MSG_INIT_OK="$PLS_MSG_PREFIX successfully initialized! Please start a fresh terminal or run 'exec bash' to start using 'please'."
 
 #
-#   [[ FUNCTIONS ]]
+#    VARIABLES IN DEV MODE
+#
+
+if [ "$PLS_DEV" -eq 1 ]; then
+    echo "$PLS_MSG_PREFIX running in DEV mode"
+    # modify some values for development
+    PLS_FILE="dev/.please"
+    PLS_ALIAS="alias pls='pwd' # comment"
+    PLS_BASHRC="dev/.bashrc"
+fi
+
+#
+#    FUNCTIONS
 #
 
 # FUNCTION: help
 pls_help() {
     # TODO
-    echo "$PLS_MSG_PREFIX please help... (WIP)"
+    echo "$PLS_MSG_PREFIX help... (WIP)"
     exit 1
 }
 
@@ -48,7 +58,7 @@ pls_init() {
 }
 
 #
-#   [[ PARSE ARGS ]]
+#    PARSE ARGS
 #
 
 # TEST: no args?
