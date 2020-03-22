@@ -17,9 +17,9 @@ PLS_FILE_COMMENT="# PLEASE! These are your saved terminal one-liners ..."
 PLS_ALIAS="alias pls='pwd' # comment" # for development
 #PLS_BASHRC="$HOME/.bashrc" # for production
 PLS_BASHRC="dev/.bashrc" # for development
-PLS_PREFIX="[please!]"
-PLS_MSG_INIT_ALREADY="$PLS_PREFIX I found '$PLS_FILE' - apparently 'please' is already initialized!"
-PLS_MSG_INIT_OK="$PLS_PREFIX Successfully initialized!"
+PLS_MSG_PREFIX="[please]"
+PLS_MSG_INIT_ALREADY="$PLS_MSG_PREFIX I found '$PLS_FILE' - apparently 'please' is already initialized!"
+PLS_MSG_INIT_OK="$PLS_MSG_PREFIX successfully initialized! Please start a fresh terminal or run 'exec bash' to start using 'please'."
 
 #
 #   [[ FUNCTIONS ]]
@@ -28,7 +28,7 @@ PLS_MSG_INIT_OK="$PLS_PREFIX Successfully initialized!"
 # FUNCTION: help
 pls_help() {
     # TODO
-    echo "$PLS_PREFIX please help... (WIP)"
+    echo "$PLS_MSG_PREFIX please help... (WIP)"
     exit 1
 }
 
@@ -42,10 +42,7 @@ pls_init() {
         echo "$PLS_FILE_COMMENT" >> "$PLS_FILE"
         # append alias to .bashrc
         echo "$PLS_ALIAS" >> "$PLS_BASHRC"
-        # unnecessarily wait for it (to be removed)
-        sleep .3
-        # source .bashrc
-        source "./$PLS_BASHRC"
+        echo "$PLS_MSG_INIT_OK"
         exit 0
     fi
 }
