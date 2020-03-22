@@ -98,14 +98,14 @@ function pls_note() {
     # if no description entered, show help
     [[ ${@#} = 0 ]] && pls_help
     # read param and remove delimiter if present (very unlikely)
-    PLS_NEW_DESC="${@//"$PLS_DELIMITER"/' '}"
+    PLS_NEW_DESC=$(echo "$@" | sed "s/$PLS_DELIMITER/ /")
     # remove newlines from description
-    PLS_NEW_DESC=${PLS_NEW_DESC//$'\n'/' '}
+    PLS_NEW_DESC=${PLS_NEW_DESC//$'\n'/ }
     # ask for one-liner to note
     echo -e -n "${PLS_MSG_PREFIX}"
     read -p " just once, tell me how to ${PLS_NEW_DESC}: " PLS_NEW_CMD
     # append to .please file
-    echo -e "${PLS_NEW_DESC}${PLS_DELIMITER}${PLS_NEW_CMD//$'\n'/' '}" >> "${PLS_FILE}"
+    echo -e "${PLS_NEW_DESC}${PLS_DELIMITER}${PLS_NEW_CMD//$'\n'/ }" >> "${PLS_FILE}"
     exit 0
 }
 
@@ -121,7 +121,7 @@ function pls_look() {
         echo -e "${PLS_MSG_PREFIX} don't be angry, but I ${TF_BOLD}didn't find anything${TF_X} :("
     else
         echo -e "${PLS_MSG_PREFIX} look at these beautiful memories! ${TF_BOLD}We noted how to ...${TF_X}"
-        echo -e $MATCHES | while read line; do echo -e "${TF_BOLD}     ... ${line//$PLS_DELIMITER/$PLS_DELIMITER$TF_X$TF_GREEN}${TF_X}"; done
+        echo -e "$MATCHES" | while IFS= read line; do echo -e "${TF_BOLD}     ... ${line//$PLS_DELIMITER/$PLS_DELIMITER$TF_X$TF_GREEN}${TF_X}"; done
     fi
     exit 0
 }
