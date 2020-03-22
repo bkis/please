@@ -1,0 +1,42 @@
+#!/bin/bash
+
+#
+#    PLEASE!
+#
+
+#### VARS
+#$PLS_FILE                = "~/.please" # for production
+$PLS_FILE                = ".please" # for development
+#$PLS_ALIAS               = "alias please test # comment" # for production
+$PLS_ALIAS               = "alias please test # comment" # for development
+#$PLS_BASHRC              = "~/.bashrc" # for production
+$PLS_BASHRC              = ".bashrc" # for development
+$PLS_PREFIX              = "[please!]"
+$PLS_MSG_INIT_ALREADY    = "$PLS_PREFIX I found '$PLS_FILE' - apparently 'please' is already initialized!"
+$PLS_MSG_INIT_OK         = "$PLS_PREFIX Successfully initialized!"
+$PLS_MSG_INIT_FAIL       = "$PLS_PREFIX Error: Could not initialize :("
+
+# function: help
+pls_help() {
+    # TODO
+    echo "$PLS_PREFIX please help... (WIP)"
+    exit 1
+}
+
+# function: initialize
+pls_init() {
+    if [ -f "$PLS_FILE" ]; then
+        echo "$PLS_MSG_ALREADY_INITIALIZED"
+    else
+        $PLS_INIT_OK = $(touch $PLS_FILE)
+        $PLS_INIT_OK = $(echo "$PLS_ALIAS" >> ~/.bashrc) && $PLS_INIT_OK
+        $PLS_INIT_OK && echo "$PLS_PREFIX" && exit 0
+    fi
+    exit 1
+}
+
+# no args?
+[ $# -eq 0 ] && pls_help
+
+# initialize?
+[ $1 -eq "initialize" ] && pls_init
