@@ -10,25 +10,25 @@
 #    VARIABLES
 #
 
-PLS_DEV=1
+PLS_DEV=1 # turn development mode ON (1) or OFF (0)
 PLS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" # thanks to https://stackoverflow.com/a/246128
-PLS_FILE="$HOME/.please"
+PLS_FILE="${HOME}/.please"
 PLS_FILE_COMMENT="# please, look at your collected terminal one-liners!"
-PLS_ALIAS="alias please="$PLS_DIR/please" # alias to run please, please"
-PLS_BASHRC="$HOME/.bashrc"
+PLS_ALIAS="alias please="${PLS_DIR}/please" # please don't remove this comment, please"
+PLS_BASHRC="${HOME}/.bashrc"
+PLS_DELIMITER="? That's so easy! Just use this: "
 PLS_MSG_PREFIX="「please」"
-PLS_MSG_INSTALL_ALREADY="$PLS_MSG_PREFIX is apparently already installed!"
-PLS_MSG_INSTALL_OK="$PLS_MSG_PREFIX has been installed! start a fresh terminal or run 'exec bash', then you can run $PLS_MSG_PREFIX."
+PLS_MSG_INSTALL_ALREADY="${PLS_MSG_PREFIX} is apparently already installed!"
+PLS_MSG_INSTALL_OK="${PLS_MSG_PREFIX} has been installed! just start a fresh terminal to use ${PLS_MSG_PREFIX}"
 
 #
-#    VARIABLES IN DEV MODE
+#    SET UP DEV MODE
 #
 
-if [ "$PLS_DEV" -eq 1 ]; then
-    echo "$PLS_MSG_PREFIX be aware that $PLS_MSG_PREFIX is running in DEV mode!"
+if [ "${PLS_DEV}" -eq 1 ]; then
     # modify some values for development
-    PLS_FILE="$PLS_DIR/dev/.please"
-    PLS_BASHRC="$PLS_DIR/dev/.bashrc"
+    PLS_FILE="${PLS_DIR}/dev/.please"
+    PLS_BASHRC="${PLS_DIR}/dev/.bashrc"
 fi
 
 #
@@ -36,48 +36,65 @@ fi
 #
 
 # FUNCTION: help
-pls_help() {
+function pls_help() {
     # TODO
-    echo "$PLS_MSG_PREFIX help... (WIP)"
+    # install
+    # uninstall
+    # remember how to 
+    echo "${PLS_MSG_PREFIX} help... (WIP)"
     exit 1
 }
 
 # FUNCTION: install
-pls_install() {
-    if grep -q "$PLS_ALIAS" "$PLS_BASHRC" && [ -f "$PLS_FILE" ]; then
-        echo "$PLS_MSG_INSTALL_ALREADY"
+function pls_install() {
+    if grep -q "${PLS_ALIAS}" "${PLS_BASHRC}" && [ -f "${PLS_FILE}" ]; then
+        echo "${PLS_MSG_INSTALL_ALREADY}"
         exit 1
     else
+        echo "${PLS_MSG_PREFIX} be patient, it won't take long ..."
         # create .please file with comment in $HOME
-        [ -f "$PLS_FILE" ] || echo "$PLS_FILE_COMMENT" > "$PLS_FILE"
+        [ -f "${PLS_FILE}" ] || echo -e "${PLS_FILE_COMMENT}\n" > "${PLS_FILE}"
         # backup .bashrc
-        echo "$PLS_MSG_PREFIX of course there will be a backup of ${PLS_BASHRC}!"
-        [ -f "$PLS_BASHRC" ] && cp "$PLS_BASHRC" "${PLS_BASHRC}_backup"
+        echo "${PLS_MSG_PREFIX} of course there will be a backup of ${PLS_BASHRC}!"
+        [ -f "${PLS_BASHRC}" ] && cp "${PLS_BASHRC}" "${PLS_BASHRC}_backup"
         # append alias to .bashrc
-        echo -e "\n\n$PLS_ALIAS" >> "$PLS_BASHRC"
-        echo "$PLS_MSG_INSTALL_OK"
+        echo -e "\n\n${PLS_ALIAS}" >> "${PLS_BASHRC}"
+        echo "${PLS_MSG_INSTALL_OK}"
         exit 0
     fi
 }
 
 # FUNCTION: uninstall
-pls_uninstall() {
+function pls_uninstall() {
     # ask for confirmation
-    read -p "$PLS_MSG_PREFIX do you really want to uninstall $PLS_MSG_PREFIX? (y/n)" -n 1 -r
+    read -p "${PLS_MSG_PREFIX} do you really want to uninstall ${PLS_MSG_PREFIX}? (y/n)" -n 1 -r
     echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    if [[ ${REPLY} =~ ^[Yy]$ ]]; then
         # uninstall...
         # backup .bashrc
-        echo "$PLS_MSG_PREFIX of course there will be a backup of ${PLS_BASHRC}!"
-        [ -f "$PLS_BASHRC" ] && cp "$PLS_BASHRC" "${PLS_BASHRC}_backup"
+        echo "${PLS_MSG_PREFIX} of course there will be a backup of ${PLS_BASHRC}!"
+        [ -f "${PLS_BASHRC}" ] && cp "${PLS_BASHRC}" "${PLS_BASHRC}_backup"
         # remove alias line from .bashrc
-        grep -v -F "$PLS_ALIAS" "$PLS_BASHRC" > "/tmp/pleasetmp"  
-        mv "/tmp/pleasetmp" "$PLS_BASHRC"
+        grep -v -F "${PLS_ALIAS}" "${PLS_BASHRC}" > "/tmp/pleasetmp"  
+        mv "/tmp/pleasetmp" "${PLS_BASHRC}"
         # inform that .please file will be kept
-        echo "$PLS_MSG_PREFIX be aware that $PLS_FILE will not be deleted. just in case :)"
+        echo "${PLS_MSG_PREFIX} be aware that ${PLS_FILE} will not be deleted. just in case :)"
         exit 0
     fi
-    echo "$PLS_MSG_PREFIX don't change your mind again!"
+    echo "${PLS_MSG_PREFIX} don't change your mind again!"
+    exit 0
+}
+
+# FUNCTION: how to remember
+function pls_remember() {
+    # if no description entered, show help
+    [[ ${@#} = 0 ]] && pls_help
+    # read param
+    PLS_NEW_DESC="${@//"$PLS_DELIMITER"/""}" # ${FOO//from/to}
+    # ask for one-liner to remember
+    read -p "${PLS_MSG_PREFIX} just once, tell me how to ${PLS_NEW_DESC}: " PLS_NEW_CMD
+    # append to .please file
+    echo -e "${PLS_NEW_DESC}${PLS_DELIMITER}${PLS_NEW_CMD}" >> "${PLS_FILE}"
     exit 0
 }
 
@@ -94,5 +111,11 @@ pls_uninstall() {
 # TEST: uninstall?
 [ "$1" = "uninstall" ] && pls_uninstall
 
+# TEST: remember?
+[ "$1" = "remember" ] && [ "$2" = "how" ] && [ "$3" = "to" ] && pls_remember "${@:4}"
+
 # TEST: just checkin'?
-[ "$1" = "please" ] && echo "$PLS_MSG_PREFIX no begging, please!" && exit 0
+[ "$1" = "please" ] && echo "${PLS_MSG_PREFIX} no begging, please!" && exit 0
+
+# ELSE ...
+pls_help
