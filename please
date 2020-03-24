@@ -52,8 +52,8 @@ fi
 # FUNCTION: help
 function pls_help() {
     echo -e "${PLS_MSG_PREFIX} ${TF_DIM}let me show you the available commands:${TF_X}"
-    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please note how to ${TF_RED}<description>${TF_X} : let ${TF_BOLD}please${TF_X} note a new one-liner"
-    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please look for ${TF_RED}<keyword>${TF_X}        : let ${TF_BOLD}please${TF_X} look for a note containing <keyword>"
+    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please note how to ${TF_RED}<description>${TF_X} : note a new one-liner"
+    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please look for ${TF_RED}<keyword>${TF_X}        : look for notes containing <keyword>"
     echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please please${TF_X}                    : don't use this command!"
     echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please help${TF_X}                      : just try and see what happens!"
     echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please uninstall yourself${TF_X}        : remove ${TF_BOLD}please${TF_X} command from system"
@@ -160,16 +160,16 @@ function pls_look() {
 [ $# -eq 0 ] && pls_help && exit 1
 
 # TEST: install?
-[ "$1" = "install" ] && [ "$2" = "yourself" ] && pls_install
+[ "$1 $2" = "install yourself" ] && pls_install
 
 # TEST: uninstall?
-[ "$1" = "uninstall" ] && [ "$2" = "yourself" ] && pls_uninstall
+[ "$1 $2" = "uninstall yourself" ] && pls_uninstall
 
 # TEST: note?
-[ "$1" = "note" ] && [ "$2" = "how" ] && [ "$3" = "to" ] && pls_note "${@:4}"
+[ "$1 $2 $3" = "note how to" ] && pls_note "${@:4}"
 
 # TEST: look for?
-[ "$1" = "look" ] && [ "$2" = "for" ] && pls_look "${@:3}"
+[ "$1 $2" = "look for" ] && pls_look "${@:3}"
 
 # TEST: just checkin'?
 [ "$1" = "help" ] && pls_help && exit 0
