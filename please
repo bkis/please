@@ -51,12 +51,13 @@ fi
 
 # FUNCTION: help
 function pls_help() {
-    # TODO
-    # install
-    # uninstall
-    # note how to 
-    echo -e "${PLS_MSG_PREFIX} help... (WIP)"
-    exit 1
+    echo -e "${PLS_MSG_PREFIX} ${TF_DIM}let me show you the available commands:${TF_X}"
+    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please note how to ${TF_RED}<description>${TF_X} : let ${TF_BOLD}please${TF_X} note a new one-liner"
+    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please look for ${TF_RED}<keyword>${TF_X}        : let ${TF_BOLD}please${TF_X} look for a note containing <keyword>"
+    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please please${TF_X}                    : don't use this command!"
+    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please help${TF_X}                      : just try and see what happens!"
+    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please uninstall yourself${TF_X}        : remove ${TF_BOLD}please${TF_X} command from system"
+    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}./please install yourself${TF_X}        : initially install ${TF_BOLD}please${TF_X}"
 }
 
 # FUNCTION: help
@@ -117,7 +118,7 @@ function pls_uninstall() {
 # FUNCTION: note how to
 function pls_note() {
     # if no description entered, show help
-    [[ ${@#} = 0 ]] && pls_help
+    [[ ${@#} = 0 ]] && pls_help && exit 1
     # read param and remove delimiter if present (very unlikely)
     PLS_NEW_DESC=$(echo "$@" | sed "s/$PLS_DELIMITER/ /")
     # remove newlines from description
@@ -134,7 +135,7 @@ function pls_note() {
 # FUNCTION: look for
 function pls_look() {
     # if nothing entered, show help
-    [[ ${@#} = 0 ]] && pls_help
+    [[ ${@#} = 0 ]] && pls_help && exit 1
     # read param
     PLS_LOOK_FOR="$@"
     # look for keyword(s)
@@ -145,7 +146,7 @@ function pls_look() {
         echo -e "${PLS_MSG_PREFIX}${TF_DIM} look at these beautiful memories! ${TF_X}${TF_BOLD}We noted how to ...${TF_X}"
         echo -e "$MATCHES" | \
             while IFS= read line; do
-                echo -e "       ${TF_BOLD}${TF_GREEN}⤳${TF_XC} ${line//$PLS_DELIMITER/$PLS_DELIMITER$TF_X$TF_GREEN}${TF_X}"
+                echo -e "  ${TF_BOLD}${TF_GREEN}⤳${TF_XC} ${line//$PLS_DELIMITER/$PLS_DELIMITER$TF_X$TF_GREEN}${TF_X}"
             done
     fi
     exit 0
@@ -156,7 +157,7 @@ function pls_look() {
 #
 
 # TEST: no args?
-[ $# -eq 0 ] && pls_help
+[ $# -eq 0 ] && pls_help && exit 1
 
 # TEST: install?
 [ "$1" = "install" ] && [ "$2" = "yourself" ] && pls_install
@@ -171,7 +172,11 @@ function pls_look() {
 [ "$1" = "look" ] && [ "$2" = "for" ] && pls_look "${@:3}"
 
 # TEST: just checkin'?
+[ "$1" = "help" ] && pls_help && exit 0
+
+# TEST: just checkin'?
 [ "$1" = "please" ] && echo -e "${PLS_MSG_PREFIX} no begging, please!" && exit 0
 
 # ELSE ...
 pls_help
+exit 1
