@@ -54,9 +54,18 @@ function pls_help() {
     exit 1
 }
 
+# FUNCTION: help
+function pls_is_installed() {
+    if grep -q "${PLS_ALIAS}" "${PLS_BASHRC}" && [ -f "${PLS_FILE}" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # FUNCTION: install
 function pls_install() {
-    if grep -q "${PLS_ALIAS}" "${PLS_BASHRC}" && [ -f "${PLS_FILE}" ]; then
+    if pls_is_installed; then
         echo -e "${PLS_MSG_PREFIX} is apparently ${TF_BOLD}already installed!${TF_X}"
         exit 1
     else
@@ -75,6 +84,11 @@ function pls_install() {
 
 # FUNCTION: uninstall
 function pls_uninstall() {
+    if ! pls_is_installed; then
+        echo -e "${PLS_MSG_PREFIX} is apparently ${TF_BOLD}not installed!${TF_X}"
+        echo -e "${PLS_MSG_PREFIX} run ${TF_RED}'./please install yourself'${TF_X} from where you put the ${PLS_MSG_PREFIX} script!"
+        exit 1
+    fi
     # ask for confirmation
     echo -e -n "${PLS_MSG_PREFIX} do you ${TF_BLINK}${TF_BOLD}really${TF_X} want me to uninstall myself? ${TF_BOLD}${TF_RED}(y/n)${TF_X}"
     read -p " " -n 1 -r
