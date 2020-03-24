@@ -30,9 +30,6 @@ PLS_DELIMITER=": "
 PLS_MSG_PREFIX="${TF_GREEN}${TF_BOLD}⸢please⸥${TF_X}"
 PLS_MSG_INSTALL_ALREADY="${PLS_MSG_PREFIX} is apparently ${TF_BOLD}already installed!${TF_X}"
 PLS_MSG_INSTALL_OK="${PLS_MSG_PREFIX} ${TF_BOLD}has been installed!${TF_XB} Just start ${TF_BOLD}a fresh terminal${TF_XB} to use ${PLS_MSG_PREFIX}"
-PLS_PATTERN_NOTE="^(note|remember|save)$"
-
-
 
 #
 #    SET UP DEV MODE
@@ -149,7 +146,7 @@ function pls_look() {
 [ "$1" = "uninstall" ] && pls_uninstall
 
 # TEST: note?
-[[ $1 =~ $PLS_PATTERN_NOTE ]] && [ "$2" = "how" ] && [ "$3" = "to" ] && pls_note "${@:4}"
+[ "$1" = "note" ] && [ "$2" = "how" ] && [ "$3" = "to" ] && pls_note "${@:4}"
 
 # TEST: look for?
 [ "$1" = "look" ] && [ "$2" = "for" ] && pls_look "${@:3}"
