@@ -43,7 +43,7 @@ Well, first of all, no one forces you to use it, so sit back down and try to bre
 > :warning: **BTW** if you want the `please`-alias to be added to a file other than `.bashrc`, you can change the variable `PLS_BASHRC` in the script to something else (preset is `${HOME}/.bashrc`).
 
 ## Command overview
-![command overview](https://user-images.githubusercontent.com/9215743/77438071-ac11af80-6de5-11ea-8d46-739808af33ac.png)
+![command overview](https://user-images.githubusercontent.com/9215743/77440789-fd6f6e00-6de8-11ea-909e-250d0387cae8.png)
 
 
 ## Contribution
