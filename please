@@ -12,10 +12,11 @@
 
 TF_X="\033[0m"
 TF_XC="\033[39m"
-TF_XB="\033[21m"
 TF_GREEN="\033[32m"
+TF_RED="\033[31m"
 TF_BOLD="\033[1m"
 TF_DIM="\033[2m"
+TF_BLINK="\033[25m"
 
 #
 #    VARIABLES
@@ -29,7 +30,7 @@ PLS_BASHRC="${HOME}/.bashrc"
 PLS_DELIMITER=": "
 PLS_MSG_PREFIX="${TF_GREEN}${TF_BOLD}⸢please⸥${TF_X}"
 PLS_MSG_INSTALL_ALREADY="${PLS_MSG_PREFIX} is apparently ${TF_BOLD}already installed!${TF_X}"
-PLS_MSG_INSTALL_OK="${PLS_MSG_PREFIX} ${TF_BOLD}has been installed!${TF_XB} Just start ${TF_BOLD}a fresh terminal${TF_XB} to use ${PLS_MSG_PREFIX}"
+PLS_MSG_INSTALL_OK="${PLS_MSG_PREFIX} ${TF_BOLD}has been installed!${TF_X} Just ${TF_BLINK}start ${TF_BOLD}a fresh terminal${TF_X} to use ${PLS_MSG_PREFIX}"
 
 #
 #    SET UP DEV MODE
@@ -65,7 +66,7 @@ function pls_install() {
         # create .please file in $HOME
         [ -f "${PLS_FILE}" ] || touch "${PLS_FILE}"
         # backup .bashrc
-        echo -e "${PLS_MSG_PREFIX} of course there will be a ${TF_BOLD}backup${TF_XB} of ${PLS_BASHRC}!"
+        echo -e "${PLS_MSG_PREFIX} be sure ${TF_BOLD}I will backup${TF_X} ${PLS_BASHRC} !"
         [ -f "${PLS_BASHRC}" ] && cp "${PLS_BASHRC}" "${PLS_BASHRC}_backup"
         # append alias to .bashrc
         echo -e "\n\n${PLS_ALIAS}" >> "${PLS_BASHRC}"
@@ -77,19 +78,19 @@ function pls_install() {
 # FUNCTION: uninstall
 function pls_uninstall() {
     # ask for confirmation
-    echo -e -n "${PLS_MSG_PREFIX}"
-    read -p " do you ${TF_BOLD}really${TF_XB} want me to uninstall myself? (y/n)" -n 1 -r
+    echo -e -n "${PLS_MSG_PREFIX} do you ${TF_BLINK}${TF_BOLD}really${TF_X} want me to uninstall myself? ${TF_BOLD}${TF_RED}(y/n)${TF_X}"
+    read -p " " -n 1 -r
     echo
     if [[ ${REPLY} =~ ^[Yy]$ ]]; then
         # uninstall...
         # backup .bashrc
-        echo -e "${PLS_MSG_PREFIX} of course ${TF_BOLD}I will back up${TF_XB} ${PLS_BASHRC}!"
+        echo -e "${PLS_MSG_PREFIX} be sure ${TF_BOLD}I will backup${TF_X} ${PLS_BASHRC} !"
         [ -f "${PLS_BASHRC}" ] && cp "${PLS_BASHRC}" "${PLS_BASHRC}_backup"
         # remove alias line from .bashrc
         grep -v -F "${PLS_ALIAS}" "${PLS_BASHRC}" > "/tmp/pleasetmp"  
         mv "/tmp/pleasetmp" "${PLS_BASHRC}"
         # inform that .please file will be kept
-        echo -e "${PLS_MSG_PREFIX} be aware that ${PLS_FILE} will ${TF_BOLD}not${TF_XB} be deleted. Just in case :)"
+        echo -e "${PLS_MSG_PREFIX} be aware that${TF_GREEN} ${PLS_FILE} ${TF_X}will ${TF_BOLD}not${TF_X} be deleted. Just in case :)"
         exit 0
     fi
     echo -e "${PLS_MSG_PREFIX} don't change your mind again!"
@@ -121,7 +122,7 @@ function pls_look() {
     # look for keyword(s)
     MATCHES=$(grep -F "$PLS_LOOK_FOR" "$PLS_FILE")
     if [[ ${MATCHES#} < 1 ]]; then
-        echo -e "${PLS_MSG_PREFIX} don't be angry, but ${TF_BOLD}I didn't find anything${TF_XB} :("
+        echo -e "${PLS_MSG_PREFIX} don't be angry, but ${TF_BOLD}I didn't find anything${TF_X} :("
     else
         echo -e "${PLS_MSG_PREFIX}${TF_DIM} look at these beautiful memories! ${TF_X}${TF_BOLD}We noted how to ...${TF_X}"
         echo -e "$MATCHES" | \
@@ -140,10 +141,10 @@ function pls_look() {
 [ $# -eq 0 ] && pls_help
 
 # TEST: install?
-[ "$1" = "install" ] && pls_install
+[ "$1" = "install" ] && [ "$2" = "yourself" ] && pls_install
 
 # TEST: uninstall?
-[ "$1" = "uninstall" ] && pls_uninstall
+[ "$1" = "uninstall" ] && [ "$2" = "yourself" ] && pls_uninstall
 
 # TEST: note?
 [ "$1" = "note" ] && [ "$2" = "how" ] && [ "$3" = "to" ] && pls_note "${@:4}"
