@@ -17,4 +17,12 @@ Well, first of all, no one forces you to use it, so sit back down and try to bre
 -   It has colors :open_mouth: The colors and the font styling make it very readable (and cool), you know?
 
 ## Installation
-...
+1)   Relax, it's very easy.
+2)   Put the `please` file wherever you want it to be. This might be your home directory (`~`) or any other place.
+3)   Open a terminal and `cd` to wherever you put `please` (if you're not already there)
+4)   Run `./please install yourself`. This will do two things:
+     1)   It will create a `~/.please` file (that's where your one-liners and their descriptions are stored).
+     2)   It will append an alias entry to your `~/.bashrc` file, so that you can run **please** from every where and don't need the correct path and the `./` anymore.
+5)   Close the terminal session and start a new one!
+6)   Run `please help` to get a list of commands!
+7)   Get into the habit of (kindly) asking **please** to note one-liners for you!
