@@ -42,8 +42,12 @@ Well, first of all, no one forces you to use it, so sit back down and try to bre
 
 > :warning: **BTW** if you want the `please`-alias to be added a file other than `.bashrc`, you can change the variable `PLS_BASHRC` in the script to something else (preset is `${HOME}/.bashrc`).
 
+## Command overview
+![command overview](https://user-images.githubusercontent.com/9215743/77438071-ac11af80-6de5-11ea-8d46-739808af33ac.png)
+
+
 ## Contribution
-This is just a very small weekend projekt I started because I had to stay inside because of the Corona virus :mask: and I was in the mood to work on something simple that I could actually finish and document really quickly. It was fun.  
+This is just a very small weekend projekt I started when I had to stay inside for isolation from the Corona virus :mask: and I was in the mood to work on something simple that I could actually finish and document really quickly. It was fun.  
 **But** I am far from experienced in writing shell scripts. If you want to improve this in any way, you're welcome to do so! It's very easy to get a grasp of what is happening in the code, so I think it's a nice playground to practice stuff like this and make something potentially useful.
 
 Just **_fork_**, **_clone_**, **_branch_**, **_hack_**, **_commit_**, **_push_** and **_create a pull request_** :woman_technologist:
