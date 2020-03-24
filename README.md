@@ -1,13 +1,23 @@
-# please
+# please :pray:
 A polite companion that helps noting exotic terminal one-liners :woman_technologist:
 
 ## What is this?
-_please_ is a **bash script**. Just one file, very simple. It takes only a handful of arguments. But, more importantly ...
+**please** is a **bash script**. Just one file, very simple. It takes only a handful of arguments. But, more importantly ...
 
-## What does it do? How to use it?
-...
+## What does it do? How do I use it?
+**please** is an easy way to note and find terminal one-liners right in the terminal. Imagine you spent a good ten minutes to search the web for the perfect terminal one-liner to _raise the audio volume of a video file_ and found `ffmpeg -i "$videofile" -vcodec copy -af "volume=12dB" "louder_$videofile"`. Sweet!  
+Of cource, next time you need this you are gonna spend the same ten minutes to look for this precious intel again _(unless you remembered it, which we both know you didn't)_.  
+**OR** you could just type `please note how to ...`:
 
-## Why would I ever use this instead of just creating aliases by hand?
+![please note how to](https://user-images.githubusercontent.com/9215743/77423182-094e3680-6dcf-11ea-8352-d13a09827472.png)
+
+... Jep, that's the command syntax of **please**. You kind of talk to it. I could have made it `please -s "raise the audio volume of a video"`, but I didn't want to - and the one who has to deal with that is you. Anyway, what now? Well, just search for a keyword using `please look for ...`:
+
+![please look for](https://user-images.githubusercontent.com/9215743/77423189-09e6cd00-6dcf-11ea-86ac-ab503cf3abdd.png)
+
+**please** will 
+
+## Why would I ever use this instead of just creating aliases for my one-liners?
 Well, first of all, no one forces you to use it, so sit back down and try to breathe steadily. Here are a few possible answers:
 
 -   Not everyone is a natural pro-hacker-6000™ and some don't even want to become one. For some people adding aliases in `.bashrc` (or similar) wouldn't be the most obvious workflow. Instead, whenever the occasional terminal user might **struggle to remember this almighty one-liner** they found online five years ago to resize 20469 holiday photos in one go, they can **just type** `please look for "crop image"` (the quotes are actually optional) to get a list of their relevant noted one-liners.
@@ -17,7 +27,7 @@ Well, first of all, no one forces you to use it, so sit back down and try to bre
 -   It has colors :open_mouth: The colors and the font styling make it very readable (and cool), you know?
 
 ## Installation
-1)   Relax, it's very easy.
+1)   _Relax, it's very easy._ :relaxed:
 2)   Put the `please` file wherever you want it to be. This might be your home directory (`~`) or any other place.
 3)   Open a terminal and `cd` to wherever you put `please` (if you're not already there)
 4)   Run `./please install yourself`. This will do two things:

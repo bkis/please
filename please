@@ -7,6 +7,12 @@
 #################
 
 #
+#    DEV MODE ON / OFF
+#
+
+PLS_DEV=0 # ON (1) or OFF (0)
+
+#
 #    TEXT FORMATTING CODES (in case it's supported by the terminal)
 #
 
@@ -22,7 +28,6 @@ TF_BLINK="\033[25m" # set text style to blink
 #    VARIABLES
 #
 
-PLS_DEV=1 # turn development mode ON (1) or OFF (0)
 PLS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" # thanks to https://stackoverflow.com/a/246128
 PLS_FILE="${HOME}/.please"
 PLS_ALIAS="alias please="${PLS_DIR}/please" # please don't remove this comment, please"
@@ -118,10 +123,11 @@ function pls_note() {
     # remove newlines from description
     PLS_NEW_DESC=${PLS_NEW_DESC//'\n'/' '}
     # ask for one-liner to note
-    echo -e -n "${PLS_MSG_PREFIX}${TF_DIM} just once, tell me ${TF_X}${TF_BOLD}how to ${PLS_NEW_DESC}${TF_X}:${TF_GREEN}"
+    echo -e -n "${PLS_MSG_PREFIX}${TF_DIM} How do you ${TF_X}${TF_BOLD}${PLS_NEW_DESC}${TF_X}?${TF_GREEN} >"
     read -p " " PLS_NEW_CMD
     # append to .please file
     echo "${PLS_NEW_DESC}${PLS_DELIMITER}${PLS_NEW_CMD//'\n'/' '}" >> "${PLS_FILE}"
+    echo -e "${PLS_MSG_PREFIX} ${TF_DIM}I noted it down for you. Don't mention it.${TF_X}"
     exit 0
 }
 
