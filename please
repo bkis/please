@@ -7,16 +7,16 @@
 #################
 
 #
-#    TEXT FORMATTING CODES
+#    TEXT FORMATTING CODES (in case it's supported by the terminal)
 #
 
-TF_X="\033[0m"
-TF_XC="\033[39m"
-TF_GREEN="\033[32m"
-TF_RED="\033[31m"
-TF_BOLD="\033[1m"
-TF_DIM="\033[2m"
-TF_BLINK="\033[25m"
+TF_X="\033[0m" # unset all styles
+TF_XC="\033[39m" # unset color
+TF_GREEN="\033[32m" # set foreground color to green
+TF_RED="\033[31m" # set foreground color to red
+TF_BOLD="\033[1m" # set text style to bold
+TF_DIM="\033[2m" # set text style to dim
+TF_BLINK="\033[25m" # set text style to blink
 
 #
 #    VARIABLES
@@ -29,8 +29,6 @@ PLS_ALIAS="alias please="${PLS_DIR}/please" # please don't remove this comment, 
 PLS_BASHRC="${HOME}/.bashrc"
 PLS_DELIMITER=": "
 PLS_MSG_PREFIX="${TF_GREEN}${TF_BOLD}⸢please⸥${TF_X}"
-PLS_MSG_INSTALL_ALREADY="${PLS_MSG_PREFIX} is apparently ${TF_BOLD}already installed!${TF_X}"
-PLS_MSG_INSTALL_OK="${PLS_MSG_PREFIX} ${TF_BOLD}has been installed!${TF_X} Just ${TF_BLINK}start ${TF_BOLD}a fresh terminal${TF_X} to use ${PLS_MSG_PREFIX}"
 
 #
 #    SET UP DEV MODE
@@ -59,7 +57,7 @@ function pls_help() {
 # FUNCTION: install
 function pls_install() {
     if grep -q "${PLS_ALIAS}" "${PLS_BASHRC}" && [ -f "${PLS_FILE}" ]; then
-        echo -e "${PLS_MSG_INSTALL_ALREADY}"
+        echo -e "${PLS_MSG_PREFIX} is apparently ${TF_BOLD}already installed!${TF_X}"
         exit 1
     else
         echo -e "${PLS_MSG_PREFIX} be patient, ${TF_BOLD}it won't take long${TF_X} ..."
@@ -70,7 +68,7 @@ function pls_install() {
         [ -f "${PLS_BASHRC}" ] && cp "${PLS_BASHRC}" "${PLS_BASHRC}_backup"
         # append alias to .bashrc
         echo -e "\n\n${PLS_ALIAS}" >> "${PLS_BASHRC}"
-        echo -e "${PLS_MSG_INSTALL_OK}"
+        echo -e "${PLS_MSG_PREFIX} ${TF_BOLD}has been installed!${TF_X} Just ${TF_BLINK}${TF_RED}start ${TF_BOLD}a fresh terminal${TF_X} to use ${PLS_MSG_PREFIX}"
         exit 0
     fi
 }
