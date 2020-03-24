@@ -1,5 +1,5 @@
 # please
-A very polite companion that helps remembering terminal one-liners :woman_technologist:
+A polite companion that helps noting exotic terminal one-liners :woman_technologist:
 
 ## What is this?
 _please_ is a **bash script**. Just one file, very simple. It takes only a handful of arguments. But, more importantly ...
