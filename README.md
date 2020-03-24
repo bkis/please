@@ -38,11 +38,11 @@ Well, first of all, no one forces you to use it, so sit back down and try to bre
 -   It's **fun** to use a command line tool with such a _**natural, friendly syntax**_ for a change. It really is!
 -   This is _**not**_ for managing your everyday commands! Obviously, this tool is not really useful for remembering `ls -lah` or the like. You'll want to create an alias for this, I understand. But what about `ffmpeg -i "$video-file" -vcodec copy -af "volume=12dB" "loud_$video-file"` (the example from [above](#what-does-it-do-how-do-i-use-it)), which raises the audio volume of a video file by 12dB while not touching the video signal? Will you use that daily? Will you remember it after some weeks? :thinking: No, you'll start searching the internet for it.
 -   Go ahead, collect your hundreds of aliases in your `.bashrc` over the years. An then when you need one of them, of course you won't remember it, forcing you to search your aliases.
--   It has colors :open_mouth: The colors and the font styling make it very readable (and cool), you know?
+-   It has colors :rainbow::open_mouth: The colors and the font styling make it very cool and readable (and cool).
 
 ## Installation
 
-1.  _Relax, it's very easy._ :relaxed:
+1.  _Relax, it's very simple._ :man_shrugging:
 2.  Put the `please` file wherever you want it to be. This might be your home directory (`~`) or any other place.
 3.  Open a terminal and `cd` to wherever you put `please` (if you're not already there)
 4.  Run `./please install yourself`. This will do two things:
@@ -60,7 +60,7 @@ Well, first of all, no one forces you to use it, so sit back down and try to bre
 
 ## Contribution
 
-This is just a very small weekend projekt I started when I had to stay inside for isolation from the Corona virus :mask: and I was in the mood to work on something simple that I could actually finish and document really quickly. It was fun.  
-**But** I am far from experienced in writing shell scripts. If you want to improve this in any way, you're welcome to do so! It's very easy to get a grasp of what is happening in the code, so I think it's a nice playground to practice stuff like this and make something potentially useful.
+This is just a very small weekend projekt I started when I had to stay inside for isolation from the Corona virus and I was in the mood to work on something simple that I could actually finish and document really quickly. It was fun.  
+**But I am far from experienced in writing shell scripts.** If you want to improve this in any way, you're welcome to do so! It's very easy to get a grasp of what is happening in the code, so I think it's a nice playground to practice stuff like this and make something potentially useful.
 
 Just **_fork_**, **_clone_**, **_branch_**, **_hack_**, **_commit_**, **_push_** and **_create a pull request_** :woman_technologist:
