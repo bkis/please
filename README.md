@@ -47,7 +47,7 @@ Well, first of all, no one forces you to use it, so sit back down and try to bre
 3.  Open a terminal and `cd` to wherever you put `please` (if you're not already there)
 4.  Run `./please install yourself`. This will do two things:
     1.  It will create a `~/.please` file (that's where your one-liners and their descriptions are stored).
-    2.  It will append an alias entry to your `~/.bashrc` file, so that you can run **please** from everywhere without the correct path and the `./`.
+    2.  It will append an alias entry to your `~/.bashrc` file, so that you can run **please** from everywhere without using the full path and the `./`.
 5.  Close the terminal session and start a new one!
 6.  Run `please help` to get a list of commands!
 7.  Get into the habit of (kindly) asking **please** to note one-liners for you!
