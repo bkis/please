@@ -34,6 +34,7 @@ PLS_ALIAS="alias please="${PLS_DIR}/please" # please don't remove this comment, 
 PLS_BASHRC="${HOME}/.bashrc"
 PLS_DELIMITER=": "
 PLS_MSG_PREFIX="${TF_GREEN}${TF_BOLD}⸢please⸥${TF_X}"
+PLS_NEWLINE="\n"
 
 #
 #    SET UP DEV MODE
@@ -51,13 +52,13 @@ fi
 
 # FUNCTION: help
 function pls_help() {
-    echo -e "${PLS_MSG_PREFIX} ${TF_DIM}let me show you the available commands:${TF_X}"
-    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please note how to ${TF_RED}<description>${TF_X} : note a new one-liner"
-    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please look for ${TF_RED}<keyword>${TF_X}        : look for notes containing <keyword>"
-    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please please${TF_X}                    : don't use this command!"
-    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please help${TF_X}                      : just try and see what happens!"
-    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please uninstall yourself${TF_X}        : remove ${TF_BOLD}please${TF_X} command from system"
-    echo -e "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}./please install yourself${TF_X}        : initially install ${TF_BOLD}please${TF_X}"
+    printf "${PLS_MSG_PREFIX} ${TF_DIM}let me show you the available commands:${TF_X}${PLS_NEWLINE}"
+    printf "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please note how to ${TF_RED}<description>${TF_X} : note a new one-liner${PLS_NEWLINE}"
+    printf "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please look for ${TF_RED}<keyword>${TF_X}        : look for notes containing <keyword>${PLS_NEWLINE}"
+    printf "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please please${TF_X}                    : don't use this command!${PLS_NEWLINE}"
+    printf "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please help${TF_X}                      : just try and see what happens!${PLS_NEWLINE}"
+    printf "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}please uninstall yourself${TF_X}        : remove ${TF_BOLD}please${TF_X} command from system${PLS_NEWLINE}"
+    printf "${TF_BOLD}${TF_GREEN}  ⤳ ${TF_X}${TF_GREEN}./please install yourself${TF_X}        : initially install ${TF_BOLD}please${TF_X}${PLS_NEWLINE}"
 }
 
 # FUNCTION: help
@@ -72,18 +73,18 @@ function pls_is_installed() {
 # FUNCTION: install
 function pls_install() {
     if pls_is_installed; then
-        echo -e "${PLS_MSG_PREFIX} is apparently ${TF_BOLD}already installed!${TF_X}"
+        printf "${PLS_MSG_PREFIX} is apparently ${TF_BOLD}already installed!${TF_X}${PLS_NEWLINE}"
         exit 1
     else
-        echo -e "${PLS_MSG_PREFIX} be patient, ${TF_BOLD}it won't take long${TF_X} ..."
+        printf "${PLS_MSG_PREFIX} be patient, ${TF_BOLD}it won't take long${TF_X} ...${PLS_NEWLINE}"
         # create .please file in $HOME
         [ -f "${PLS_FILE}" ] || touch "${PLS_FILE}"
         # backup .bashrc
-        echo -e "${PLS_MSG_PREFIX} be sure ${TF_BOLD}I will backup${TF_X} ${PLS_BASHRC} !"
+        printf "${PLS_MSG_PREFIX} note that ${TF_BOLD}I will backup${TF_X} ${PLS_BASHRC} !${PLS_NEWLINE}"
         [ -f "${PLS_BASHRC}" ] && cp "${PLS_BASHRC}" "${PLS_BASHRC}_backup"
         # append alias to .bashrc
-        echo -e "\n\n${PLS_ALIAS}" >> "${PLS_BASHRC}"
-        echo -e "${PLS_MSG_PREFIX} ${TF_BOLD}has been installed!${TF_X} Just ${TF_BLINK}${TF_RED}start ${TF_BOLD}a fresh terminal${TF_X} to use ${PLS_MSG_PREFIX}"
+        printf "\n\n${PLS_ALIAS}${PLS_NEWLINE}" >> "${PLS_BASHRC}"
+        printf "${PLS_MSG_PREFIX} ${TF_BOLD}has been installed!${TF_X} Just ${TF_BLINK}${TF_RED}start ${TF_BOLD}a fresh terminal${TF_X} to use ${PLS_MSG_PREFIX}${PLS_NEWLINE}"
         exit 0
     fi
 }
@@ -91,27 +92,27 @@ function pls_install() {
 # FUNCTION: uninstall
 function pls_uninstall() {
     if ! pls_is_installed; then
-        echo -e "${PLS_MSG_PREFIX} is apparently ${TF_BOLD}not installed!${TF_X}"
-        echo -e "${PLS_MSG_PREFIX} run ${TF_RED}'./please install yourself'${TF_X} from where you put the ${PLS_MSG_PREFIX} script!"
+        printf "${PLS_MSG_PREFIX} is apparently ${TF_BOLD}not installed!${TF_X}${PLS_NEWLINE}"
+        printf "${PLS_MSG_PREFIX} run ${TF_RED}'./please install yourself'${TF_X} from where you put the ${PLS_MSG_PREFIX} script!${PLS_NEWLINE}"
         exit 1
     fi
     # ask for confirmation
-    echo -e -n "${PLS_MSG_PREFIX} do you ${TF_BLINK}${TF_BOLD}really${TF_X} want me to uninstall myself? ${TF_BOLD}${TF_RED}(y/n)${TF_X}"
+    printf "${PLS_MSG_PREFIX} do you ${TF_BLINK}${TF_BOLD}really${TF_X} want me to uninstall myself? ${TF_BOLD}${TF_RED}(y/n)${TF_X}"
     read -p " " -n 1 -r
-    echo
+    printf "${PLS_NEWLINE}"
     if [[ ${REPLY} =~ ^[Yy]$ ]]; then
         # uninstall...
         # backup .bashrc
-        echo -e "${PLS_MSG_PREFIX} be sure ${TF_BOLD}I will backup${TF_X} ${PLS_BASHRC} !"
+        printf "${PLS_MSG_PREFIX} note that ${TF_BOLD}I will backup${TF_X} ${PLS_BASHRC} !${PLS_NEWLINE}"
         [ -f "${PLS_BASHRC}" ] && cp "${PLS_BASHRC}" "${PLS_BASHRC}_backup"
         # remove alias line from .bashrc
         grep -v -F "${PLS_ALIAS}" "${PLS_BASHRC}" > "/tmp/pleasetmp"  
         mv "/tmp/pleasetmp" "${PLS_BASHRC}"
         # inform that .please file will be kept
-        echo -e "${PLS_MSG_PREFIX} be aware that${TF_GREEN} ${PLS_FILE} ${TF_X}will ${TF_BOLD}not${TF_X} be deleted. Just in case :)"
+        printf "${PLS_MSG_PREFIX} be aware that${TF_GREEN} ${PLS_FILE} ${TF_X}will ${TF_BOLD}not${TF_X} be deleted. Just in case :)${PLS_NEWLINE}"
         exit 0
     fi
-    echo -e "${PLS_MSG_PREFIX} don't change your mind again!"
+    printf "${PLS_MSG_PREFIX} don't change your mind again!${PLS_NEWLINE}"
     exit 0
 }
 
@@ -120,15 +121,15 @@ function pls_note() {
     # if no description entered, show help
     [[ ${@#} = 0 ]] && pls_help && exit 1
     # read param and remove delimiter if present (very unlikely)
-    PLS_NEW_DESC=$(echo "$@" | sed "s/$PLS_DELIMITER/ /")
+    PLS_NEW_DESC=$(printf "$@" | sed "s/$PLS_DELIMITER/ /")
     # remove newlines from description
     PLS_NEW_DESC=${PLS_NEW_DESC//'\n'/' '}
     # ask for one-liner to note
-    echo -e -n "${PLS_MSG_PREFIX}${TF_DIM} How do you ${TF_X}${TF_BOLD}${PLS_NEW_DESC}${TF_X}?${TF_GREEN} >"
+    printf "${PLS_MSG_PREFIX}${TF_DIM} How do you ${TF_X}${TF_BOLD}${PLS_NEW_DESC}${TF_X}?${TF_GREEN} >"
     read -p " " PLS_NEW_CMD
     # append to .please file
-    echo "${PLS_NEW_DESC}${PLS_DELIMITER}${PLS_NEW_CMD//'\n'/' '}" >> "${PLS_FILE}"
-    echo -e "${PLS_MSG_PREFIX} ${TF_DIM}I noted it down for you. Don't mention it.${TF_X}"
+    printf "${PLS_NEW_DESC}${PLS_DELIMITER}${PLS_NEW_CMD//'\n'/' '}${PLS_NEWLINE}" >> "${PLS_FILE}"
+    printf "${PLS_MSG_PREFIX} ${TF_DIM}I noted it down for you. Don't mention it.${TF_X}${PLS_NEWLINE}"
     exit 0
 }
 
@@ -141,13 +142,16 @@ function pls_look() {
     # look for keyword(s)
     MATCHES=$(grep -F "$PLS_LOOK_FOR" "$PLS_FILE")
     if [[ ${MATCHES#} < 1 ]]; then
-        echo -e "${PLS_MSG_PREFIX} don't be angry, but ${TF_BOLD}I didn't find anything${TF_X} :("
+        printf "${PLS_MSG_PREFIX} don't be angry, but ${TF_BOLD}I didn't find anything${TF_X} :(${PLS_NEWLINE}"
     else
-        echo -e "${PLS_MSG_PREFIX}${TF_DIM} look at these beautiful memories! ${TF_X}${TF_BOLD}We noted how to ...${TF_X}"
-        echo -e "$MATCHES" | \
+        printf "${PLS_NEWLINE}"
+        printf "${PLS_MSG_PREFIX}${TF_DIM} look at these beautiful memories! ${TF_X}${TF_BOLD}We noted how to ...${TF_X}${PLS_NEWLINE}"
+        printf "${PLS_NEWLINE}"
+        printf "${MATCHES}${PLS_NEWLINE}" | \
             while IFS= read line; do
-                echo -e "  ${TF_BOLD}${TF_GREEN}⤳${TF_XC} ${line//$PLS_DELIMITER/$PLS_DELIMITER$TF_X$TF_GREEN}${TF_X}"
+                printf "${TF_BOLD}${TF_GREEN}⤳${TF_XC} ${line//$PLS_DELIMITER/$PLS_DELIMITER$PLS_NEWLINE  $TF_X$TF_GREEN}${TF_X}\n"
             done
+        printf "${PLS_NEWLINE}"
     fi
     exit 0
 }
@@ -175,7 +179,7 @@ function pls_look() {
 [ "$1" = "help" ] && pls_help && exit 0
 
 # TEST: just checkin'?
-[ "$1" = "please" ] && echo -e "${PLS_MSG_PREFIX} no begging, please!" && exit 0
+[ "$1" = "please" ] && printf "${PLS_MSG_PREFIX} no begging, please!${PLS_NEWLINE}" && exit 0
 
 # ELSE ...
 pls_help
