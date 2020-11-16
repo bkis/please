@@ -4,12 +4,13 @@ A polite companion that helps noting exotic terminal one-liners :woman_technolog
 
 ![demonstrational animation](https://user-images.githubusercontent.com/9215743/77434881-d06b8d00-6de1-11ea-8ec1-6440c9d6436b.gif)
 
--   [What is this?](#what-is-this)
--   [What does it do? How do I use it?](#what-does-it-do-how-do-i-use-it)
--   [Why would I ever use this instead of just creating aliases for my one-liners?](#why-would-i-ever-use-this-instead-of-just-creating-aliases-for-my-one-liners)
--   [Installation](#installation)
--   [Command overview](#command-overview)
--   [Contribution](#contribution)
+- [please :pray:](#please-pray)
+  - [What is this?](#what-is-this)
+  - [What does it do? How do I use it?](#what-does-it-do-how-do-i-use-it)
+  - [Why would I ever use this instead of just creating aliases for my one-liners?](#why-would-i-ever-use-this-instead-of-just-creating-aliases-for-my-one-liners)
+  - [Installation](#installation)
+  - [Command overview](#command-overview)
+  - [Contribution](#contribution)
 
 ## What is this?
 
@@ -47,10 +48,10 @@ Well, first of all, no one forces you to use it, so sit back down and try to bre
 3.  Open a terminal and `cd` to wherever you put `please` (if you're not already there)
 4.  Run `./please install yourself`. This will do two things:
     1.  It will create a `~/.please` file (that's where your one-liners and their descriptions are stored).
-    2.  It will append an alias entry to your `~/.bashrc` file, so that you can run **please** from everywhere without using the full path and the `./`.
+    2.  It will append an alias entry to your `~/.bashrc` file, so that you can run `please` from anywhere without using the full path and the `./`.
 5.  Close the terminal session and start a new one!
 6.  Run `please help` to get a list of commands!
-7.  Get into the habit of (kindly) asking **please** to note one-liners for you!
+7.  Get into the habit of (_kindly_) asking **please** to note one-liners for you!
 
 > :warning: **BTW** if you want the `please`-alias to be added to a file other than `.bashrc`, you can change the variable `PLS_BASHRC` in the script to something else (preset is `${HOME}/.bashrc`).
 
