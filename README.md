@@ -19,7 +19,7 @@ A polite companion that helps noting exotic terminal one-liners :woman_technolog
 ## What does it do? How do I use it?
 
 **please** is an easy way to note and find terminal one-liners right in the terminal. Imagine you spent a good ten minutes to search the web for the perfect terminal one-liner to _raise the audio volume of a video file_ and found `ffmpeg -i "$videofile" -vcodec copy -af "volume=12dB" "louder_$videofile"`. Sweet!  
-Of cource, next time you need this you are gonna spend the same ten minutes to look for this precious intel again _(unless you remembered it, which we both know you didn't)_.  
+But next time you need this you are gonna spend the same ten minutes to look for this precious intel again _(unless you remembered it, which we both know you didn't)_.  
 **OR** you could just type `please note how to ...`:
 
 ![please note how to](https://user-images.githubusercontent.com/9215743/77423182-094e3680-6dcf-11ea-8352-d13a09827472.png)
